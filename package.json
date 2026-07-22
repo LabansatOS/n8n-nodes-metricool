@@ -1,0 +1,42 @@
+{
+	"name": "n8n-nodes-metricool-social",
+	"version": "0.3.1",
+	"description": "n8n community node for Metricool — scheduling, analytics, inbox, and agency APIs",
+	"license": "MIT",
+	"homepage": "",
+	"keywords": ["n8n-community-node-package", "metricool", "social-media"],
+	"author": {
+		"name": "Oscar L.",
+		"email": "oscar@digitalascent.mx"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/labansatos/n8n-nodes-metricool-social.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": ["dist"],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": ["dist/credentials/MetricoolApi.credentials.js"],
+		"nodes": ["dist/nodes/Metricool/Metricool.node.js"]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "*",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
