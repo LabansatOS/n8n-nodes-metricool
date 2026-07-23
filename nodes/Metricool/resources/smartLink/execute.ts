@@ -1,4 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { resolveBrandTimezone, toMetricoolQueryDateTime } from '../../helpers/dates';
 import { getBlogId, metricoolApiRequest, returnJsonArray, throwUnknownOperation } from '../../GenericFunctions';
 
@@ -112,7 +113,15 @@ export async function executeSmartLink(
 		const to = toMetricoolQueryDateTime(this.getNodeParameter('to', itemIndex) as string, timezone);
 		const qs: IDataObject = { from, to };
 		if (analyticsType === 'timeline') {
-			qs.metric = this.getNodeParameter('metric', itemIndex) as string;
+			const metric = (this.getNodeParameter('metric', itemIndex, '') as string).trim();
+			if (!metric) {
+				throw new NodeOperationError(
+					this.getNode(),
+					'Metric is required when Analytics Type is Timeline',
+					{ itemIndex },
+				);
+			}
+			qs.metric = metric;
 			const itemId = (this.getNodeParameter('itemId', itemIndex, '') as string).trim();
 			if (itemId) {
 				qs.itemId = Number(itemId) || itemId;

@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-metricool-social",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"description": "n8n community node for Metricool — scheduling, analytics, inbox, and agency APIs",
 	"license": "MIT",
 	"homepage": "",

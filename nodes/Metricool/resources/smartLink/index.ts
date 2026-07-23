@@ -122,7 +122,6 @@ export const smartLinkFields: INodeProperties[] = [
 		displayName: 'Metric',
 		name: 'metric',
 		type: 'string',
-		required: true,
 		default: '',
 		placeholder: 'e.g. clicks',
 		description: 'Required for timeline analytics',

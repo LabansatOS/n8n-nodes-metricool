@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2
+
+### Fixed
+- Scheduled Post Create/Update no longer blocks the UI when Networks is set by expression: YouTube Title and Pinterest Board are validated at runtime only when those networks are selected
+- Smart Link Get Analytics: Metric is validated at runtime for Timeline (same expression-safe pattern)
+
 ## 0.3.1
 
 ### Added
