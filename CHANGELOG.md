@@ -4,6 +4,7 @@
 
 ### Fixed
 - Scheduled Post Create/Update no longer blocks the UI when Networks is set by expression: YouTube Title and Pinterest Board are validated at runtime only when those networks are selected
+- Scheduled Post Create/Update accepts Networks from expressions as a string, JSON array string, or array (fixes `networks.map is not a function`)
 - Smart Link Get Analytics: Metric is validated at runtime for Timeline (same expression-safe pattern)
 
 ## 0.3.1

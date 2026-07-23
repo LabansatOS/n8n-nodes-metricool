@@ -24,6 +24,34 @@ function splitLines(value: string): string[] {
 		.filter(Boolean);
 }
 
+/** Normalize multiOptions / expression values to a string array. */
+function normalizeNetworks(value: unknown): string[] {
+	if (value === undefined || value === null || value === '') {
+		return [];
+	}
+	if (Array.isArray(value)) {
+		return value.map((entry) => String(entry).trim()).filter(Boolean);
+	}
+	if (typeof value === 'string') {
+		const trimmed = value.trim();
+		if (!trimmed) {
+			return [];
+		}
+		if (trimmed.startsWith('[')) {
+			try {
+				const parsed = JSON.parse(trimmed) as unknown;
+				if (Array.isArray(parsed)) {
+					return parsed.map((entry) => String(entry).trim()).filter(Boolean);
+				}
+			} catch {
+				// fall through to comma/newline split
+			}
+		}
+		return splitLines(trimmed);
+	}
+	return [String(value).trim()].filter(Boolean);
+}
+
 export async function buildScheduledPostBody(
 	this: IExecuteFunctions,
 	itemIndex: number,
@@ -43,7 +71,7 @@ export async function buildScheduledPostBody(
 	const blogId = getBlogId.call(this, itemIndex);
 	const timezone = await resolveBrandTimezone.call(this, itemIndex, blogId);
 	const publicationDateRaw = this.getNodeParameter('publicationDate', itemIndex) as string;
-	const networks = this.getNodeParameter('networks', itemIndex) as string[];
+	const networks = normalizeNetworks(this.getNodeParameter('networks', itemIndex));
 	const mediaUrls = this.getNodeParameter('mediaUrls', itemIndex, '') as string;
 	const mediaAltText = this.getNodeParameter('mediaAltText', itemIndex, '') as string;
 	const firstCommentText = this.getNodeParameter('firstCommentText', itemIndex, '') as string;
@@ -53,7 +81,7 @@ export async function buildScheduledPostBody(
 	const descendantsRaw = this.getNodeParameter('descendantsJson', itemIndex, '') as string;
 	const extraJson = this.getNodeParameter('extraJson', itemIndex, '') as string;
 
-	if (!networks?.length) {
+	if (!networks.length) {
 		throw new NodeOperationError(this.getNode(), 'Select at least one network', { itemIndex });
 	}
 
